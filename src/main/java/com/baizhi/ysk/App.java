@@ -6,6 +6,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 
 @SpringBootApplication
 @MapperScan("com.baizhi.ysk.mapper")
+@org.mybatis.spring.annotation.MapperScan("com.baizhi.ysk.mapper")
 public class App {
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);

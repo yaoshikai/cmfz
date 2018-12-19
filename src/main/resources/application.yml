@@ -17,3 +17,4 @@ spring:
       prefix: .jsp
 mybatis:
   type-aliases-package: com.baizhi.ysk.entity
+  mapper-locations: classpath:com/baizhi/ysk/mapper/*Mapper.xml

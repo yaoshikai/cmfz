@@ -12,6 +12,13 @@
     <link rel="stylesheet" href="css/login.css" type="text/css"></link>
     <script type="text/javascript" src="script/jquery.js"></script>
     <script type="text/javascript" src="script/common.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/themes/default/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/themes/icon.css"/>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/easyui-lang-zh_CN.js"></script>
+
     <script type="text/javascript">
 
         $(function () {
@@ -21,13 +28,24 @@
             });
 
             //  form 表单提交
-            $("#loginForm").form("submit", {
-                url: "${pageContext.request.contextPath}/admin/login",
-                onSubmit: function () {
-                    return $("#loginForm").form("validate");
-                },
-                success: function (result) {
-                }
+            $("#loginBtn").click(function () {
+                $("#loginForm").form("submit", {
+                    url: "${pageContext.request.contextPath}/admin/login",
+                    onSubmit: function () {
+                        return $("#loginForm").form("validate");
+                    },
+                    success: function (result) {
+                        if (result == "ok") {
+                            location.href = "${pageContext.request.contextPath}/main/main.jsp";
+                        } else {
+                            /*展示错误信息*/
+                        }
+                    }
+                });
+            });
+
+            $("#name").textbox({
+                required: true
             });
         });
     </script>
@@ -47,7 +65,8 @@
                     用户名:
                 </th>
                 <td>
-                    <input type="text" name="admin.name" class="text" maxlength="20"/>
+                    <%--<input type="text" name="name" class="text" maxlength="20"/>--%>
+                    <input id="name"/>
                 </td>
             </tr>
             <tr>
@@ -55,7 +74,7 @@
                     密&nbsp;&nbsp;&nbsp;码:
                 </th>
                 <td>
-                    <input type="password" name="admin.password" class="text" maxlength="20" autocomplete="off"/>
+                    <input type="password" name="password" class="text" maxlength="20" autocomplete="off"/>
                 </td>
             </tr>
 
@@ -80,9 +99,8 @@
                 <td>&nbsp;</td>
                 <th>&nbsp;</th>
                 <td>
-                    <input type="button" class="homeButton" value="" onclick="location.href='/'"><input type="submit"
-                                                                                                        class="loginButton"
-                                                                                                        value="登录">
+                    <input type="button" class="homeButton" value=""><input id="loginBtn" class="loginButton"
+                                                                            type="button" value="登录"/>
                 </td>
             </tr>
             </tbody>
