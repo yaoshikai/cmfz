@@ -20,7 +20,7 @@ public class AdminController {
     public String login(Admin admin, HttpSession session, String enCode) {
         try {
             adminService.login(admin, session, enCode);
-            return "ok";
+            return "right";
         } catch (Exception e) {
             log.debug(e.getMessage());
             return e.getMessage();

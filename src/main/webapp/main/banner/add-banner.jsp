@@ -8,6 +8,10 @@
         $("#bannerDescriptionInput").textbox({
             required: true
         });
+        $("#file").filebox({
+            required: true,
+            buttonText: "选择文件"
+        });
         $("#addBannerCancleBtn").linkbutton({
             text: "返回上级",
             plain: true,
@@ -56,8 +60,14 @@
             <td><input id="bannerDescriptionInput" name="description"/></td>
         </tr>
         <tr>
+            <td>是否展示</td>
+            <td><input type="radio" name="status" value="Y"/>是
+                <input type="radio" name="status" value="N" checked/>否
+            </td>
+        </tr>
+        <tr>
             <td>图片</td>
-            <td><input type="file" name="file"/></td>
+            <td><input id="file" name="file"/></td>
         </tr>
     </table>
 </form>

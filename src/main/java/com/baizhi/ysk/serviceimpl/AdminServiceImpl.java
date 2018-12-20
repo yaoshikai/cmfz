@@ -20,7 +20,7 @@ public class AdminServiceImpl implements AdminService {
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public void login(Admin admin, HttpSession session, String enCode) {
         String code = (String) session.getAttribute("code");
-        if (!code.equals(enCode)) throw new RuntimeException("验证码错误");
+        if (!code.equalsIgnoreCase(enCode)) throw new RuntimeException("验证码错误");
         Admin ad = new Admin();
         ad.setName(admin.getName());
         Admin a = adminMapper.selectOne(ad);

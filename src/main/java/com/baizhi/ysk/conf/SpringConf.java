@@ -10,9 +10,4 @@ public class SpringConf {
     public BannerDto getBannerDto() {
         return new BannerDto();
     }
-
-    @Bean
-    public CreateValidateCode getCreateValidateCode() {
-        return new CreateValidateCode();
-    }
 }

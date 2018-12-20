@@ -35,10 +35,12 @@
                         return $("#loginForm").form("validate");
                     },
                     success: function (result) {
-                        if (result == "ok") {
+                        var s1 = result;
+                        var s2 = "\"" + "right" + "\"";
+                        if (s1 == s2) {
                             location.href = "${pageContext.request.contextPath}/main/main.jsp";
                         } else {
-                            /*展示错误信息*/
+                            alert("错误信息：" + result);
                         }
                     }
                 });
@@ -62,8 +64,7 @@
                     用户名:
                 </th>
                 <td>
-                    <%--<input type="text" name="name" class="text" maxlength="20"/>--%>
-                    <input id="name"/>
+                    <input type="text" name="name" class="text" maxlength="20"/>
                 </td>
             </tr>
             <tr>

@@ -48,7 +48,6 @@ public class BannerServiceImpl implements BannerService {
 
         banner.setImgPath("/upload/" + originalFilename);
         banner.setPubDate(new Date());
-        banner.setStatus("N");
 
         bannerMapper.insert(banner);
     }
