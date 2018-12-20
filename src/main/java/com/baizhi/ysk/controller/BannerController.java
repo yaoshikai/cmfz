@@ -29,8 +29,9 @@ public class BannerController {
     }
 
     @RequestMapping("/deleteBanner")
-    public void deleteBanner(Integer bannerId) {
-        bannerService.deleteBanner(bannerId);
+    public String deleteBanner(Integer id) {
+        bannerService.deleteBanner(id);
+        return "";
     }
 
     @RequestMapping("/updateBanner")

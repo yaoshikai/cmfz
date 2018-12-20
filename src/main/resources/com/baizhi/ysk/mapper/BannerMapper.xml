@@ -3,7 +3,7 @@
 <mapper namespace="com.baizhi.ysk.mapper.BannerMapper">
 
     <select id="queryAllBanner" resultType="Banner">
-        select banner_id bannerId,title,img_path imgPath,status,pub_date pubDate,description
+        select banner_id "id",title,img_path imgPath,status,pub_date pubDate,description
         from banner limit
              ${(page-1)*rows},
              ${rows}

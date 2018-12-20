@@ -33,18 +33,10 @@
         text: "删除",
         iconCls: 'icon-remove',
         handler: function () {
-            var row = $("#showBannerTable").datagrid("getSelected");
+            var row = $("#showBannerTable").edatagrid("getSelected");
+            console.log(row);
             if (row !== null) {
-                $.post("${pageContext.request.contextPath}/banner/deleteBanner", "bannerId=" + row.bannerId, function () {
-                    $.messager.show({
-                        title: "系统提示",
-                        msg: "删除成功!",
-                        showType: "show",
-                        width: 300,
-                        height: 200
-                    });
-                    $("#showBannerTable").datagrid("reload");
-                });
+                $("#showBannerTable").edatagrid("destroyRow");
             } else {
                 $.messager.alert(
                     "提示",
@@ -72,6 +64,7 @@
     $(function () {
         $("#showBannerTable").edatagrid({
             url: "${pageContext.request.contextPath}/banner/queryAllBanner",
+            destroyUrl: "${pageContext.request.contextPath}/banner/deleteBanner",
             updateUrl: "${pageContext.request.contextPath}/banner/updateBanner",
             columns: [[
                 {field: 'title', title: '标题', width: 100, align: 'center'},
