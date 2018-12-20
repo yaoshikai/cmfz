@@ -81,7 +81,7 @@
                     formatter: myStatus,
                     width: 100,
                     align: 'center',
-                    editor: {type: "text"}
+                    editor: {type: "text", options: {required: true}}
                 },
                 {field: 'pubDate', title: '发布日期', width: 100, align: 'center'}
             ]],
