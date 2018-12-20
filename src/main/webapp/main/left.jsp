@@ -5,10 +5,16 @@
     $(function () {
         $.get("${pageContext.request.contextPath}/menu/queryAll", function (result) {
             for (var i = 0; i < result.length; i++) {
+                var s1 = "<ul type='circle'>";
+                var s2 = "</ul>";
+                for (var j = 0; j < result[i].menuList.length; j++) {
+                    s1 += "<li><a class='easyui-linkbutton' onclick=\"addTabs('" + result[i].menuList[j].title + "','" + result[i].menuList[j].iconcls + "','" + result[i].menuList[j].url + "')\" data-options=\"iconCls:'" + result[i].menuList[j].iconcls + "'\">" + result[i].menuList[j].title + "</a></li>"
+                }
+                var s = s1 + s2;
                 $("#left-accordion").accordion("add", {
                     title: result[i].title,
                     iconCls: result[i].iconcls,
-                    content: showSecond(result[i].menuList),
+                    content: s,
                     selected: false
                 });
             }
@@ -16,27 +22,21 @@
 
     });
 
-    function showSecond(list) {
-        var ul = $("<ul></ul>");
-        for (var i = 0; i < list.length; i++) {
-            var li1 = $("<li><a class='easyui-linkbutton' onclick='clickSecond(" + result[i].title + "," + result[i].url + ")'>" + list[i].title + "</a></li>");
-            ul.append(li1);
-        }
-        return ul;
-    }
-
-    function clickSecond(title, url) {
-        if (("#tt").tabs("exists", title)) {
+    function addTabs(title, iconcls, url) {
+        if ($("#tt").tabs("exists", title)) {
             $("#tt").tabs("select", title);
         } else {
             $("#tt").tabs("add", {
                 title: title,
+                href: "${pageContext.request.contextPath}" + url,
                 closable: true,
+                iconCls: iconcls,
                 pill: true,
                 fit: true
             });
         }
     }
+
 </script>
 
 

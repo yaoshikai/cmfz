@@ -44,9 +44,6 @@
                 });
             });
 
-            $("#name").textbox({
-                required: true
-            });
         });
     </script>
 </head>
