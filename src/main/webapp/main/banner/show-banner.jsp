@@ -34,7 +34,6 @@
         iconCls: 'icon-remove',
         handler: function () {
             var row = $("#showBannerTable").edatagrid("getSelected");
-            console.log(row);
             if (row !== null) {
                 $("#showBannerTable").edatagrid("destroyRow");
             } else {
@@ -87,7 +86,7 @@
             view: detailview,
             detailFormatter: function (rowIndex, rowData) {
                 return '<table><tr>' +
-                    '<td rowspan=2 style="border:0"><img src="${pageContext.request.contextPath}' + rowData.imgPath + '" style="height:90px;"></td>' +
+                    '<td rowspan=2 style="border:0"><img src="${pageContext.request.contextPath}/upload/' + rowData.imgPath + '" style="height:90px;"></td>' +
                     '<td style="border:0">' +
                     '<p>标题: ' + rowData.title + '</p>' +
                     '<p>描述: ' + rowData.description + '</p>' +

@@ -8,7 +8,7 @@
                 var s1 = "<ul type='circle'>";
                 var s2 = "</ul>";
                 for (var j = 0; j < result[i].menuList.length; j++) {
-                    s1 += "<li><a class='easyui-linkbutton' onclick=\"addTabs('" + result[i].menuList[j].title + "','" + result[i].menuList[j].iconcls + "','" + result[i].menuList[j].url + "')\" data-options=\"iconCls:'" + result[i].menuList[j].iconcls + "'\">" + result[i].menuList[j].title + "</a></li>"
+                    s1 += "<li><a class='easyui-linkbutton' onclick=\"addTabs('" + result[i].menuList[j].title + "','" + result[i].menuList[j].iconcls + "','" + result[i].menuList[j].url + "')\" data-options=\"plain:true,iconCls:'" + result[i].menuList[j].iconcls + "'\">" + result[i].menuList[j].title + "</a></li>"
                 }
                 var s = s1 + s2;
                 $("#left-accordion").accordion("add", {
