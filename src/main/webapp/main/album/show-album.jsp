@@ -7,7 +7,12 @@
         iconCls: 'icon-search',
         handler: function () {
             var row = $("#showAlbumTable").treegrid("getSelected");
-            if (!isNaN(row.id)) {
+            if (row == null) {
+                $.messager.alert(
+                    "提示",
+                    "请选择专辑!"
+                );
+            } else if (!isNaN(row.id)) {
                 $("#lookAlbumDetail").dialog("open");
                 albumId = row.id;
             } else {
@@ -48,7 +53,12 @@
         iconCls: 'icon-save',
         handler: function () {
             var row = $("#showAlbumTable").treegrid("getSelected");
-            if (isNaN(row.id)) {
+            if (row == null) {
+                $.messager.alert(
+                    "提示",
+                    "请选择章节!"
+                );
+            } else if (isNaN(row.id)) {
                 location.href = "${pageContext.request.contextPath}/chapter/download?name=" + row.url;
             } else {
                 $.messager.alert(
@@ -77,7 +87,14 @@
             pagination: true,
             pageSize: 3,
             pageList: [3, 5, 7, 9],
-            toolbar: toolbar
+            toolbar: toolbar,
+            onDblClickRow: function (row) {
+                if (row.children == null) {
+                    var path = "${pageContext.request.contextPath}/audio/" + row.url;
+                    $("#" + row.id).prop("autoplay", "autoplay");
+                    $("#" + row.id).prop("src", path);
+                }
+            }
         });
 
         /*初始化专辑详情对话框*/
@@ -135,7 +152,7 @@
     function run(value, row, index) {
         if (row.children == null) {
             var path = "${pageContext.request.contextPath}/audio/" + value;
-            return "<audio style='height:30px;width:220px' controls='controls' src='" + path + "'/>";
+            return "<audio id='" + row.id + "' style='height:30px;width:220px' controls='controls' src='" + path + "'/>";
         }
     }
 </script>

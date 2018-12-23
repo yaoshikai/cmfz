@@ -5,6 +5,10 @@ import com.baizhi.ysk.entity.Chapter;
 import com.baizhi.ysk.mapper.AlbumMapper;
 import com.baizhi.ysk.mapper.ChapterMapper;
 import com.baizhi.ysk.service.ChapterService;
+import it.sauronsoftware.jave.Encoder;
+import it.sauronsoftware.jave.EncoderException;
+import it.sauronsoftware.jave.MultimediaInfo;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +28,7 @@ import java.util.UUID;
 
 @Service
 @Transactional
+@Log4j
 public class ChapterServiceImpl implements ChapterService {
     @Autowired
     private ChapterMapper chapterMapper;
@@ -35,19 +40,37 @@ public class ChapterServiceImpl implements ChapterService {
         ServletContext servletContext = session.getServletContext();
         String realPath = servletContext.getRealPath("audio");
         String originalFilename = file.getOriginalFilename();
+
+        /*获取文件大小*/
         Long fileSize = file.getSize();
         Double d = Double.valueOf(fileSize.toString());
         DecimalFormat df = new DecimalFormat("#0.00");
         String format = df.format(d / 1024 / 1024);
 
+        /*获取时长*/
         File f = new File(realPath + "/" + originalFilename);
+        Encoder encoder = new Encoder();
+        MultimediaInfo info = null;
+        try {
+            info = encoder.getInfo(f);
+        } catch (EncoderException e) {
+            e.printStackTrace();
+        }
+        long l = info.getDuration();
+        String time = "";
+        if (l / 60000 != 0) {
+            time = l / 60000 + "分" + (l % 60000) / 1000 + "秒";
+        } else {
+            time = (l % 60000) / 1000 + "秒";
+        }
+
 
         String uuid = UUID.randomUUID().toString().replace("-", "");
         chapter.setId(uuid);
         chapter.setUrl(originalFilename);
         chapter.setUploadDate(new Date());
         chapter.setSize(format + "MB");
-        chapter.setDuration("20min");
+        chapter.setDuration(time);
 
         chapterMapper.insert(chapter);
 
@@ -62,6 +85,7 @@ public class ChapterServiceImpl implements ChapterService {
         albumMapper.updateByPrimaryKeySelective(a);
 
         file.transferTo(f);
+
     }
 
     @Override

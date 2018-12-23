@@ -5,6 +5,7 @@ import com.baizhi.ysk.entity.Album;
 import com.baizhi.ysk.mapper.AlbumMapper;
 import com.baizhi.ysk.mapper.ChapterMapper;
 import com.baizhi.ysk.service.AlbumService;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -20,6 +21,7 @@ import java.util.List;
 
 @Service
 @Transactional
+@Log4j
 public class AlbumServiceImpl implements AlbumService {
     @Autowired
     private AlbumMapper albumMapper;
