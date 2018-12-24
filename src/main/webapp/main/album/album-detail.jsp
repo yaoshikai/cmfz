@@ -2,14 +2,10 @@
 
 <script type="text/javascript">
     $(function () {
-        $("#albumDetailForm").form("load", "${pageContext.request.contextPath}/album/queryOneAlbum?id=" + albumId);
+        $("#albumDetailForm").form("load", album);
 
-        $("#albumDetailForm").form({
-            onLoadSuccess: function (data) {
-                var path = "${pageContext.request.contextPath}/album-cover/" + data.coverImg;
-                $("#detailAlbumCoverImg").prop("src", path);
-            }
-        });
+        var path = "${pageContext.request.contextPath}/album-cover/" + album.coverImg;
+        $("#detailAlbumCoverImg").prop("src", path);
 
         $("#back").linkbutton({
             text: "返回上级",

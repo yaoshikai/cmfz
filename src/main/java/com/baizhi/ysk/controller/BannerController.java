@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/banner")
@@ -24,7 +23,7 @@ public class BannerController {
     }
 
     @RequestMapping("/addBanner")
-    public void addBanner(MultipartFile file, Banner banner, HttpSession session) throws IOException {
+    public void addBanner(MultipartFile file, Banner banner, HttpSession session) {
         bannerService.addBanner(file, banner, session);
     }
 

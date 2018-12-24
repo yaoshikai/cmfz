@@ -9,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/chapter")
@@ -18,12 +17,12 @@ public class ChapterController {
     private ChapterService chapterService;
 
     @RequestMapping("/addChapter")
-    public void addChapter(Chapter chapter, MultipartFile file, HttpSession session) throws IOException {
+    public void addChapter(Chapter chapter, MultipartFile file, HttpSession session) {
         chapterService.addChapter(chapter, file, session);
     }
 
     @RequestMapping("/download")
-    public void download(String name, HttpSession session, HttpServletResponse response) throws IOException {
-        chapterService.download(name, session, response);
+    public void download(String name, String title, HttpSession session, HttpServletResponse response) {
+        chapterService.download(name, title, session, response);
     }
 }

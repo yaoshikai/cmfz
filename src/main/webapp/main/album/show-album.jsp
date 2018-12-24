@@ -1,6 +1,7 @@
 <%@page pageEncoding="UTF-8" isELIgnored="false" %>
 
 <script type="text/javascript">
+    var album;
     var albumId;
     var toolbar = [{
         text: "专辑详情",
@@ -14,7 +15,7 @@
                 );
             } else if (!isNaN(row.id)) {
                 $("#lookAlbumDetail").dialog("open");
-                albumId = row.id;
+                album = row;
             } else {
                 $.messager.alert(
                     "提示",
@@ -59,7 +60,7 @@
                     "请选择章节!"
                 );
             } else if (isNaN(row.id)) {
-                location.href = "${pageContext.request.contextPath}/chapter/download?name=" + row.url;
+                location.href = "${pageContext.request.contextPath}/chapter/download?name=" + row.url + "&title=" + row.title;
             } else {
                 $.messager.alert(
                     "提示",

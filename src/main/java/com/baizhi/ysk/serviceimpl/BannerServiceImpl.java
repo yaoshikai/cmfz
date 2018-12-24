@@ -39,13 +39,16 @@ public class BannerServiceImpl implements BannerService {
     }
 
     @Override
-    public void addBanner(MultipartFile file, Banner banner, HttpSession session) throws IOException {
+    public void addBanner(MultipartFile file, Banner banner, HttpSession session) {
         ServletContext servletContext = session.getServletContext();
         String realPath = servletContext.getRealPath("upload");
 
         String originalFilename = file.getOriginalFilename();
         File f = new File(realPath + "/" + originalFilename);
-        file.transferTo(f);
+        try {
+            file.transferTo(f);
+        } catch (IOException e) {
+        }
 
         banner.setImgPath(originalFilename);
         banner.setPubDate(new Date());
