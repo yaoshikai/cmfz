@@ -57,6 +57,18 @@
                 height: 200
             });
         }
+    }, '-', {
+        text: "导出数据",
+        iconCls: 'icon-back',
+        handler: function () {
+            location.href = "${pageContext.request.contextPath}/banner/exportBanner";
+        }
+    }, '-', {
+        text: "导入数据",
+        iconCls: 'icon-ok',
+        handler: function () {
+            $("#importDialog").dialog("open");
+        }
     }];
 
 
@@ -97,6 +109,7 @@
             toolbar: toolbar
         });
 
+
         /*初始化添加对话框*/
         $("#addBannerDialog").dialog({
             title: "添加轮播图",
@@ -114,6 +127,22 @@
             href: "${pageContext.request.contextPath}/main/banner/add-banner.jsp"
         });
 
+
+        $("#importDialog").dialog({
+            title: "轮播图",
+            iconCls: "icon-tip",
+            closed: true,
+            modal: true,
+            cache: false,
+            width: 400,
+            height: 500,
+            collapsible: true,
+            minimizable: true,
+            maximizable: true,
+            resizable: true,
+            href: "${pageContext.request.contextPath}/main/banner/import-banner.jsp"
+        });
+
     });
 
 
@@ -127,4 +156,6 @@
 </script>
 
 <table id="showBannerTable"></table>
+<div id="importDialog">
+</div>
 <div id="addBannerDialog"></div>

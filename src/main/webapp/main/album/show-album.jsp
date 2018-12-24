@@ -68,7 +68,14 @@
                 );
             }
         }
+    }, '-', {
+        text: "导出数据",
+        iconCls: 'icon-back',
+        handler: function () {
+            location.href = "${pageContext.request.contextPath}/album/exportAlbum";
+        }
     }];
+
 
     $(function () {
         $("#showAlbumTable").treegrid({

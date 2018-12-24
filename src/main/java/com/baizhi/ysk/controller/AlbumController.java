@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/album")
@@ -30,8 +30,13 @@ public class AlbumController {
     }
 
     @RequestMapping("/addAlbum")
-    public void addAlbum(Album album, MultipartFile file, HttpSession session) throws IOException {
+    public void addAlbum(Album album, MultipartFile file, HttpSession session) {
         albumService.addAlbum(album, file, session);
+    }
+
+    @RequestMapping("/exportAlbum")
+    public void exportAlbum(HttpServletResponse response, HttpSession session) {
+        albumService.exportAlbum(response, session);
     }
 
 
