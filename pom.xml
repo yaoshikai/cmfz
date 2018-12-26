@@ -29,7 +29,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
         <!--web支持的jar springboot的启动器-->
@@ -124,6 +124,12 @@
             <groupId>cn.afterturn</groupId>
             <artifactId>easypoi-annotation</artifactId>
             <version>3.2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.tobato</groupId>
+            <artifactId>fastdfs-client</artifactId>
+            <version>1.26.2</version>
         </dependency>
 
     </dependencies>
