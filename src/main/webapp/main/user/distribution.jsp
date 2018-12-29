@@ -74,30 +74,36 @@
         $.ajax({
             type: "POST",
             url: "${pageContext.request.contextPath}/user/queryDistributionUser",
-            data: "sex=男",
+            data: "sex=男&sex2=女",
             dataType: "JSON",
             success: function (data) {
                 distribution.setOption({
                     series: [
-                        {data: data}, {}
+                        {data: data.male}, {data: data.female}
                     ]
                 });
             }
         });
-        $.ajax({
-            type: "POST",
-            url: "${pageContext.request.contextPath}/user/queryDistributionUser",
-            data: "sex=女",
-            dataType: "JSON",
-            success: function (data) {
+
+
+        var goEasy2 = new GoEasy({
+            appkey: "BC-a65c5d1a24504b399fb5c85e23aa7b9e"
+        });
+        goEasy2.subscribe({
+            channel: "cmfz2",
+            onMessage: function (message) {
+                var data = eval("(" + message.content + ")");
                 distribution.setOption({
                     series: [
-                        {}, {data: data}
+                        {data: data.male}, {data: data.female}
                     ]
                 });
             }
         });
+
     });
+
+
 </script>
 
 

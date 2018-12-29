@@ -8,19 +8,20 @@
             <if test="condition=='近一周'">DATEDIFF(now(),reg_date)&lt;7</if>
             <if test="condition=='近两周'">DATEDIFF(now(),reg_date)&lt;14</if>
             <if test="condition=='近三周'">DATEDIFF(now(),reg_date)&lt;21</if>
+            and status='Y'
         </where>
     </select>
 
     <select id="queryDistributionUserM" resultType="com.baizhi.ysk.dto.Province">
         select province name,count(*) value
         from cmfz_user
-        where sex='M'
+        where sex='M' and status='Y'
         group by province
     </select>
     <select id="queryDistributionUserF" resultType="com.baizhi.ysk.dto.Province">
         select province name,count(*) value
         from cmfz_user
-        where sex='F'
+        where sex='F' and status='Y'
         group by province
     </select>
 

@@ -23,6 +23,8 @@
     });
 
     function addTabs(title, iconcls, url) {
+
+
         if ($("#tt").tabs("exists", title)) {
             $("#tt").tabs("select", title);
         } else {

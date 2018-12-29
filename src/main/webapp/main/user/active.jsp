@@ -17,7 +17,6 @@
                 data: ["近一周", "近两周", "近三周"]
             },
             yAxis: {}
-
         };
         // 使用刚指定的配置项和数据显示图表。
         activeUser.setOption(option);
@@ -31,6 +30,21 @@
             });
         }, "JSON");
 
+        var goEasy1 = new GoEasy({
+            appkey: "BC-a65c5d1a24504b399fb5c85e23aa7b9e"
+        });
+        goEasy1.subscribe({
+            channel: "cmfz",
+            onMessage: function (message) {
+                var ss = eval("(" + message.content + ")");
+                activeUser.setOption({
+                    series: [{
+                        type: 'bar',
+                        data: ss.data
+                    }]
+                });
+            }
+        });
 
     });
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -22,12 +23,13 @@ public class UserController {
     public List<Integer> queryActiveUser(String condition1, String condition2, String condition3) {
         List<Integer> integers = userService.queryActiveUser(condition1, condition2, condition3);
         return integers;
+
     }
 
     @RequestMapping("/queryDistributionUser")
-    public List<Province> queryDistributionUser(String sex) {
-        List<Province> provinces = userService.queryDistributionUser(sex);
-        return provinces;
+    public Map<String, List<Province>> queryDistributionUser(String sex, String sex2) {
+        Map<String, List<Province>> map = userService.queryDistributionUser(sex, sex2);
+        return map;
     }
 
     @RequestMapping("/queryAllUser")

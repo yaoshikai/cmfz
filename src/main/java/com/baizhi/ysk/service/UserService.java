@@ -7,11 +7,12 @@ import com.baizhi.ysk.entity.User;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
     List<Integer> queryActiveUser(String condition1, String condition2, String condition3);
 
-    List<Province> queryDistributionUser(String sex);
+    Map<String, List<Province>> queryDistributionUser(String sex, String sex2);
 
     Dto<User> queryAllUser(Integer page, Integer rows);
 

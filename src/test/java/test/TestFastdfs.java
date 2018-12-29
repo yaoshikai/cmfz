@@ -4,6 +4,7 @@ import com.baizhi.ysk.App;
 import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.proto.storage.DownloadByteArray;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
+import io.goeasy.GoEasy;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,14 @@ public class TestFastdfs {
 
     @Test
     public void testDelete() {
-        fastFileStorageClient.deleteFile("group1", "M00/00/00/wKiph1wj3LuAeqTBAAEpQEVDqhc182.jpg");
+        fastFileStorageClient.deleteFile("group1", "M00/00/00/wKiph1wj9iqAavSdAADp0r09m2E671.jpg");
     }
 
+
+    @Test
+    public void test() {
+        GoEasy goEasy = new GoEasy("http://rest-hangzhou.goeasy.io", "BC-a65c5d1a24504b399fb5c85e23aa7b9e");
+        goEasy.publish("cmfz", "hahahah");
+    }
 
 }
