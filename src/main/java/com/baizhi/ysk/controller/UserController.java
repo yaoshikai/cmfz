@@ -47,4 +47,21 @@ public class UserController {
     public void exportUser(HttpServletResponse response, HttpSession session) {
         userService.exportUser(response, session);
     }
+
+    @RequestMapping("changeUser")
+    public Object changeUser(User user) {
+        Object obj = userService.changeUser(user);
+        return obj;
+    }
+
+    @RequestMapping("/login")
+    public Object login(String phone, String password, String code) {
+        return null;
+    }
+
+    @RequestMapping("/regist")
+    public Object regist(String phone, String password) {
+        return null;
+    }
+
 }

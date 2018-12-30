@@ -1,6 +1,8 @@
 package test;
 
 import com.baizhi.ysk.App;
+import com.baizhi.ysk.entity.Banner;
+import com.baizhi.ysk.mapper.BannerMapper;
 import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.proto.storage.DownloadByteArray;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
@@ -12,12 +14,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.*;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = App.class)
 public class TestFastdfs {
     @Autowired
     FastFileStorageClient fastFileStorageClient;
+    @Autowired
+    BannerMapper bannerMapper;
 
     @Test
     public void testUpload() throws FileNotFoundException {
@@ -45,6 +50,15 @@ public class TestFastdfs {
     public void test() {
         GoEasy goEasy = new GoEasy("http://rest-hangzhou.goeasy.io", "BC-a65c5d1a24504b399fb5c85e23aa7b9e");
         goEasy.publish("cmfz", "hahahah");
+    }
+
+
+    @Test
+    public void test1() {
+        Banner t = new Banner();
+        t.setStatus("Y");
+        List<Banner> select = bannerMapper.select(t);
+        System.out.println(select);
     }
 
 }

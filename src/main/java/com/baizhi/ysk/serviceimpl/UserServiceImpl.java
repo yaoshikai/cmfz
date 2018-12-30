@@ -3,7 +3,9 @@ package com.baizhi.ysk.serviceimpl;
 import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import com.alibaba.fastjson.JSONObject;
+import com.baizhi.ysk.conf.RandomSaltUtil;
 import com.baizhi.ysk.dto.Dto;
+import com.baizhi.ysk.dto.ErrorDto;
 import com.baizhi.ysk.dto.Province;
 import com.baizhi.ysk.entity.User;
 import com.baizhi.ysk.mapper.UserMapper;
@@ -11,6 +13,7 @@ import com.baizhi.ysk.service.UserService;
 import com.github.pagehelper.PageHelper;
 import io.goeasy.GoEasy;
 import lombok.extern.log4j.Log4j;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -120,6 +123,71 @@ public class UserServiceImpl implements UserService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    @Override
+    public Object changeUser(User user) {
+        if (user.getId() == null) {
+            return new ErrorDto(200, "参数不能为空");
+        } else {
+            if (user.getPassword() != null) {
+                String saltCode = RandomSaltUtil.generetRandomSaltCode();
+                user.setSalt(saltCode);
+                user.setPassword(DigestUtils.md5Hex(user.getPassword() + saltCode));
+            }
+            userMapper.updateByPrimaryKeySelective(user);
+            User u = userMapper.selectByPrimaryKey(user.getId());
+            return u;
+        }
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public Object login(String phone, String password, String code) {
+        if (phone == null || (password == null && code == null)) {
+            return new ErrorDto(200, "参数不能为空");
+        } else {
+            User u = new User();
+            u.setPhone(phone);
+            User user = userMapper.selectOne(u);
+            if (password != null) {
+                if (user == null) {
+                    return new ErrorDto(201, "用户不存在");
+                } else {
+                    String newPassword = DigestUtils.md5Hex(password + user.getSalt());
+                    if (!newPassword.equals(user.getPassword())) {
+                        return new ErrorDto(202, "密码错误");
+                    } else {
+                        return user;
+                    }
+                }
+            } else {
+                /*
+                从redis数据库中取短信验证码rightCode,然后判断验证码code是否等于rightCode
+                 */
+                return null;
+            }
+        }
+    }
+
+    @Override
+    public Object regist(String phone, String password) {
+        if (phone == null || password == null) {
+            return new ErrorDto(200, "参数不能为空");
+        } else {
+            String saltCode = RandomSaltUtil.generetRandomSaltCode();
+            String newPassword = DigestUtils.md5Hex(password + saltCode);
+            User u = new User();
+            u.setSalt(saltCode);
+            u.setPhone(phone);
+            u.setPassword(newPassword);
+            userMapper.insertSelective(u);
+
+            User u2 = new User();
+            u2.setPhone(phone);
+            User user = userMapper.selectOne(u2);
+            return user;
         }
     }
 }

@@ -43,4 +43,19 @@
                    ${rows}) a
                  left join chapter c on c.album_id = a.id
     </select>
+
+
+    <select id="queryOneAlbum" parameterType="Integer" resultType="Album">
+        select id,
+               title,
+               count,
+               cover_img coverImg,
+               score,
+               author,
+               broadcast,
+               brief,
+               pub_date  pubDate
+        from album
+        where id = #{id}
+    </select>
 </mapper>

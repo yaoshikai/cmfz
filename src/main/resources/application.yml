@@ -19,6 +19,14 @@ spring:
     multipart:
       max-file-size: 50MB
       max-request-size: 500MB
+  redis:
+    host: 192.168.169.134
+    port: 7000
+    pool:
+      max-idle: 100
+      min-idle: 1
+      max-active: 1000
+      max-wait: -1
 mybatis:
   type-aliases-package: com.baizhi.ysk.entity
   mapper-locations: classpath:com/baizhi/ysk/mapper/*Mapper.xml

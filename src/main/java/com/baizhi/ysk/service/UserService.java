@@ -19,4 +19,10 @@ public interface UserService {
     void updateUser(User user);
 
     void exportUser(HttpServletResponse response, HttpSession session);
+
+    Object changeUser(User user);
+
+    Object login(String phone, String password, String code);
+
+    Object regist(String phone, String password);
 }
