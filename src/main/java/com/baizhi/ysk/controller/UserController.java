@@ -55,13 +55,15 @@ public class UserController {
     }
 
     @RequestMapping("/login")
-    public Object login(String phone, String password, String code) {
-        return null;
+    public Object login(String phone, String password, String code, HttpSession session) {
+        Object login = userService.login(phone, password, code, session);
+        return login;
     }
 
     @RequestMapping("/regist")
     public Object regist(String phone, String password) {
-        return null;
+        Object regist = userService.regist(phone, password);
+        return regist;
     }
 
 }

@@ -16,6 +16,8 @@ import lombok.extern.log4j.Log4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +40,8 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Autowired
     private Dto<User> userDto;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -144,7 +148,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public Object login(String phone, String password, String code) {
+    public Object login(String phone, String password, String code, HttpSession session) {
         if (phone == null || (password == null && code == null)) {
             return new ErrorDto(200, "参数不能为空");
         } else {
@@ -159,14 +163,21 @@ public class UserServiceImpl implements UserService {
                     if (!newPassword.equals(user.getPassword())) {
                         return new ErrorDto(202, "密码错误");
                     } else {
+                        session.setAttribute("user", user);
                         return user;
                     }
                 }
             } else {
                 /*
-                从redis数据库中取短信验证码rightCode,然后判断验证码code是否等于rightCode
+                从redis数据库中取短信验证码identifyCode,然后判断验证码code是否等于identifyCode
                  */
-                return null;
+                ValueOperations ops = redisTemplate.opsForValue();
+                String identifyCode = (String) ops.get("identifyCode");
+                if (identifyCode.equals(code)) {
+                    return user;
+                } else {
+                    return new ErrorDto(202, "验证码错误");
+                }
             }
         }
     }

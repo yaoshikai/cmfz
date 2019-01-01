@@ -22,7 +22,7 @@ public interface UserService {
 
     Object changeUser(User user);
 
-    Object login(String phone, String password, String code);
+    Object login(String phone, String password, String code, HttpSession session);
 
     Object regist(String phone, String password);
 }
