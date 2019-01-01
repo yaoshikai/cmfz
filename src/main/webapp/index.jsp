@@ -4,9 +4,13 @@
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript">
         $(function () {
-            $.post("${pageContext.request.contextPath}/firstPage/queryMember", "uid=1", function (res) {
-                console.log(res);
-            }, "JSON");
+            /*$.post("
+            ${pageContext.request.contextPath}/identify/obtain", "phone=15286826080", function (result) {
+                console.log(result);
+            });*/
+            $.post("${pageContext.request.contextPath}/identify/check", "phone=15286826080&code=330393", function (result) {
+                console.log(result);
+            });
         });
     </script>
 </head>

@@ -11,10 +11,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.*;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = App.class)
@@ -23,6 +26,8 @@ public class TestFastdfs {
     FastFileStorageClient fastFileStorageClient;
     @Autowired
     BannerMapper bannerMapper;
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Test
     public void testUpload() throws FileNotFoundException {
@@ -59,6 +64,15 @@ public class TestFastdfs {
         t.setStatus("Y");
         List<Banner> select = bannerMapper.select(t);
         System.out.println(select);
+    }
+
+    @Test
+    public void testRedis() {
+        ValueOperations ops = redisTemplate.opsForValue();
+        //redisTemplate.delete("identifyCode");
+        ops.set("identifyCode", "112233", 30, TimeUnit.SECONDS);
+        //Object obj = ops.get("identifyCode");
+        //System.out.println(obj);
     }
 
 }

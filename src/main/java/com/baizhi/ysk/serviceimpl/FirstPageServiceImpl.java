@@ -49,11 +49,11 @@ public class FirstPageServiceImpl implements FirstPageService {
                     return new ErrorDto(200, "参数不能为空");
                 } else {
                     if ("ssyj".equals(subType)) {
-                        List<Article> articles = articleMapper.queryAllArticleBySsyj(uid, subType);
+                        List<Article> articles = articleMapper.queryAllArticleBySsyj(uid);
                         ArticleDto articleDto = new ArticleDto(articles);
                         return articleDto;
                     } else if ("xmfy".equals(subType)) {
-                        List<Article> articles = articleMapper.queryAllArticleByXmfy(uid, subType);
+                        List<Article> articles = articleMapper.queryAllArticleByXmfy(uid);
                         ArticleDto articleDto = new ArticleDto(articles);
                         return articleDto;
                     } else {
