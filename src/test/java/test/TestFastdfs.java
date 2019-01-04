@@ -1,8 +1,8 @@
 package test;
 
-import com.baizhi.ysk.App;
-import com.baizhi.ysk.entity.Banner;
-import com.baizhi.ysk.mapper.BannerMapper;
+import com.baizhi.ysk.controller.App;
+import com.baizhi.ysk.controller.entity.Banner;
+import com.baizhi.ysk.controller.mapper.BannerMapper;
 import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.proto.storage.DownloadByteArray;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
@@ -31,9 +31,9 @@ public class TestFastdfs {
 
     @Test
     public void testUpload() throws FileNotFoundException {
-        File file = new File("D:/reba3.jpg");
+        File file = new File("D:/华仔.jpg");
         StorePath storePath = fastFileStorageClient.uploadFile(new FileInputStream(file), file.length(), "jpg", null);
-        System.out.println(storePath);
+        System.out.println(storePath.getFullPath());
     }
 
 
