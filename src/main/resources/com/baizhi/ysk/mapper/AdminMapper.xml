@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.ysk.mapper.AdminMapper">
+
+    <select id="queryRolesByName" parameterType="String" resultType="Role">
+        select r.id,r.name
+        from admin a
+                 inner join admin_role ar on a.admin_id = ar.admin_id
+                 inner join role r on r.id = ar.role_id
+        where a.name = #{name}
+    </select>
+
+
+    <select id="queryLimitsById" parameterType="Integer" resultType="Limits">
+        select l.id,l.name
+        from role r
+                 inner join role_limits rl on r.id = rl.role_id
+                 inner join limits l on rl.limits_id = l.id
+        where r.id = #{id}
+    </select>
+
+</mapper>

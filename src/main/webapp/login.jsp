@@ -48,6 +48,7 @@
 
         });
     </script>
+
 </head>
 <body>
 
@@ -103,7 +104,7 @@
             </tr>
             </tbody>
         </table>
-        <div class="powered">COPYRIGHT © 2008-2017.</div>
+        <div class="powered">COPYRIGHT ? 2008-2017.</div>
         <div class="link">
             <a href="http://www.chimingfowang.com/">持名佛网首页</a> |
             <a href="http://www.chimingbbs.com/">交流论坛</a> |

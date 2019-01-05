@@ -1,12 +1,17 @@
 package test;
 
-import com.baizhi.ysk.controller.App;
-import com.baizhi.ysk.controller.entity.Banner;
-import com.baizhi.ysk.controller.mapper.BannerMapper;
+import com.baizhi.ysk.App;
+import com.baizhi.ysk.conf.RandomSaltUtil;
+import com.baizhi.ysk.entity.Banner;
+import com.baizhi.ysk.entity.Limits;
+import com.baizhi.ysk.entity.Role;
+import com.baizhi.ysk.mapper.AdminMapper;
+import com.baizhi.ysk.mapper.BannerMapper;
 import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.proto.storage.DownloadByteArray;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import io.goeasy.GoEasy;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +31,8 @@ public class TestFastdfs {
     FastFileStorageClient fastFileStorageClient;
     @Autowired
     BannerMapper bannerMapper;
+    @Autowired
+    AdminMapper adminMapper;
     @Autowired
     RedisTemplate redisTemplate;
 
@@ -73,6 +80,27 @@ public class TestFastdfs {
         ops.set("identifyCode", "112233", 30, TimeUnit.SECONDS);
         //Object obj = ops.get("identifyCode");
         //System.out.println(obj);
+    }
+
+
+    @Test
+    public void testMD5() {
+        String salt = RandomSaltUtil.generetRandomSaltCode();
+        Md5Hash md5Hash = new Md5Hash("123456", salt, 1024);
+        String s = md5Hash.toHex();
+        System.out.println(salt);
+        System.out.println(s);
+    }
+
+
+    @Test
+    public void testAdmin() {
+        List<Role> roles = adminMapper.queryRolesByName("aaa");
+        System.out.println(roles.size());
+        System.out.println(roles);
+        List<Limits> limits = adminMapper.queryLimitsById(1);
+        System.out.println(limits.size());
+        System.out.println(limits);
     }
 
 }
