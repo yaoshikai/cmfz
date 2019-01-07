@@ -98,7 +98,7 @@
             toolbar: toolbar,
             onDblClickRow: function (row) {
                 if (row.children == null) {
-                    var path = "${pageContext.request.contextPath}/audio/" + row.url;
+                    var path = "http://192.168.169.135/" + row.url;
                     $("#" + row.id).prop("autoplay", "autoplay");
                     $("#" + row.id).prop("src", path);
                 }
@@ -155,11 +155,12 @@
             /*加载添加页面*/
             href: "${pageContext.request.contextPath}/main/album/add-chapter.jsp"
         });
+
     });
 
     function run(value, row, index) {
         if (row.children == null) {
-            var path = "${pageContext.request.contextPath}/audio/" + value;
+            var path = "http://192.168.169.135/" + value;
             return "<audio id='" + row.id + "' style='height:30px;width:220px' controls='controls' src='" + path + "'/>";
         }
     }

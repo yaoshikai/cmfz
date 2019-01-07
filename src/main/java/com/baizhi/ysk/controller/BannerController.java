@@ -25,8 +25,8 @@ public class BannerController {
     }
 
     @RequestMapping("/addBanner")
-    public void addBanner(MultipartFile file, Banner banner, HttpSession session) {
-        bannerService.addBanner(file, banner, session);
+    public void addBanner(MultipartFile file, Banner banner) {
+        bannerService.addBanner(file, banner);
     }
 
     @RequestMapping("/deleteBanner")

@@ -51,7 +51,7 @@
             <td><input id="addChapterTitle" name="title"/></td>
         </tr>
         <tr>
-            <td>章节名称：</td>
+            <td>章节音频：</td>
             <td><input id="addChapterUrl" name="file"/></td>
         </tr>
     </table>

@@ -1,16 +1,21 @@
 package test;
 
 import com.baizhi.ysk.App;
+import com.baizhi.ysk.conf.LuceneUtil;
 import com.baizhi.ysk.conf.RandomSaltUtil;
+import com.baizhi.ysk.entity.Article;
 import com.baizhi.ysk.entity.Banner;
 import com.baizhi.ysk.entity.Limits;
 import com.baizhi.ysk.entity.Role;
 import com.baizhi.ysk.mapper.AdminMapper;
+import com.baizhi.ysk.mapper.ArticleMapper;
 import com.baizhi.ysk.mapper.BannerMapper;
 import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.proto.storage.DownloadByteArray;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import io.goeasy.GoEasy;
+import org.apache.lucene.document.*;
+import org.apache.lucene.index.IndexWriter;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +26,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -35,10 +41,12 @@ public class TestFastdfs {
     AdminMapper adminMapper;
     @Autowired
     RedisTemplate redisTemplate;
+    @Autowired
+    ArticleMapper articleMapper;
 
     @Test
     public void testUpload() throws FileNotFoundException {
-        File file = new File("D:/华仔.jpg");
+        File file = new File("E:\\后期项目\\项目相关\\6. 项目图片\\audioCollection\\A-5.jpg");
         StorePath storePath = fastFileStorageClient.uploadFile(new FileInputStream(file), file.length(), "jpg", null);
         System.out.println(storePath.getFullPath());
     }
@@ -102,5 +110,48 @@ public class TestFastdfs {
         System.out.println(limits.size());
         System.out.println(limits);
     }
+
+
+    @Test
+    public void testString() {
+        String s = "group2/M00/00/00/wKipiVwzUd6AJ__xAAATN0-nwls483.jpg";
+        String[] split = s.split("/", 2);
+        for (int i = 0; i < split.length; i++) {
+            System.out.println(split[i]);
+        }
+    }
+
+
+    @Test
+    public void testMysqlToIndex() {
+        List<Article> articles = articleMapper.queryAllArticle();
+        IndexWriter indexWriter = LuceneUtil.getIndexWriter();
+        for (Article article : articles) {
+            try {
+                indexWriter.addDocument(articleToDocument(article));
+            } catch (IOException e) {
+                e.printStackTrace();
+                LuceneUtil.rollback(indexWriter);
+            }
+        }
+        LuceneUtil.commit(indexWriter);
+    }
+
+
+    public Document articleToDocument(Article article) {
+        Document document = new Document();
+        document.add(new IntField("id", article.getId(), Field.Store.YES));
+        document.add(new StringField("title", article.getTitle(), Field.Store.YES));
+        document.add(new StringField("insertImg", article.getInsertImg(), Field.Store.YES));
+        document.add(new TextField("content", article.getContent(), Field.Store.YES));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String format = sdf.format(article.getPubDate());
+        document.add(new StringField("pubDate", format, Field.Store.YES));
+        document.add(new StringField("dharma", article.getGuru().getDharma(), Field.Store.YES));
+        return document;
+    }
+
+
+
 
 }

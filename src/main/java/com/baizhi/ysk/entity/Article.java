@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import tk.mybatis.mapper.annotation.KeySql;
 
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -24,4 +25,7 @@ public class Article implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JSONField(format = "yyyy-MM-dd")
     private Date pubDate;
+    private Integer guruId;
+    @Transient
+    private Guru guru;
 }

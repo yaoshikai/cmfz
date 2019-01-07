@@ -5,6 +5,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>持名法州主页</title>
     <link rel="shortcut icon" href="#"/>
+    <link rel="stylesheet" id="s_superplus_css_lnk" type="text/css"
+          href="${pageContext.request.contextPath}/index_files/super_min_0cb4b166.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/index_files/card_min_e8bcf60d.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/index_files/ubase_83c8f0ba.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/index_files/mt_min_d0e7c6d2.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/index_files/nsguide_a8cbc2e7.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/index_files/super_ext_c02dfc40.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/themes/default/easyui.css"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/themes/icon.css"/>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.min.js"></script>

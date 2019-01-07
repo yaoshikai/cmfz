@@ -9,6 +9,9 @@ import com.baizhi.ysk.entity.Banner;
 import com.baizhi.ysk.mapper.BannerMapper;
 import com.baizhi.ysk.service.BannerService;
 import com.github.pagehelper.PageHelper;
+import com.github.tobato.fastdfs.domain.StorePath;
+import com.github.tobato.fastdfs.service.FastFileStorageClient;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +36,8 @@ public class BannerServiceImpl implements BannerService {
     private BannerMapper bannerMapper;
     @Autowired
     private Dto<Banner> bannerDto;
+    @Autowired
+    FastFileStorageClient fastFileStorageClient;
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -47,18 +52,15 @@ public class BannerServiceImpl implements BannerService {
     }
 
     @Override
-    public void addBanner(MultipartFile file, Banner banner, HttpSession session) {
-        ServletContext servletContext = session.getServletContext();
-        String realPath = servletContext.getRealPath("upload");
-
-        String originalFilename = file.getOriginalFilename();
-        File f = new File(realPath + "/" + originalFilename);
+    public void addBanner(MultipartFile file, Banner banner) {
+        StorePath storePath = null;
         try {
-            file.transferTo(f);
+            storePath = fastFileStorageClient.uploadFile(file.getInputStream(), file.getSize(), FilenameUtils.getExtension(file.getOriginalFilename()), null);
         } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        banner.setImgPath(originalFilename);
+        banner.setImgPath(storePath.getFullPath());
         banner.setPubDate(new Date());
 
         bannerMapper.insert(banner);

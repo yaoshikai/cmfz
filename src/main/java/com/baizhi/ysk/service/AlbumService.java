@@ -12,7 +12,7 @@ public interface AlbumService {
 
     Album queryOneAlbum(Integer id);
 
-    void addAlbum(Album album, MultipartFile file, HttpSession session);
+    void addAlbum(Album album, MultipartFile file);
 
     void exportAlbum(HttpServletResponse response, HttpSession session);
 }

@@ -6,6 +6,8 @@ import com.baizhi.ysk.dto.Dto;
 import com.baizhi.ysk.entity.Album;
 import com.baizhi.ysk.mapper.AlbumMapper;
 import com.baizhi.ysk.service.AlbumService;
+import com.github.tobato.fastdfs.domain.StorePath;
+import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import lombok.extern.log4j.Log4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -15,10 +17,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
@@ -34,6 +34,8 @@ public class AlbumServiceImpl implements AlbumService {
     private AlbumMapper albumMapper;
     @Autowired
     private Dto<Album> dto;
+    @Autowired
+    FastFileStorageClient fastFileStorageClient;
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -53,22 +55,18 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public void addAlbum(Album album, MultipartFile file, HttpSession session) {
-        ServletContext servletContext = session.getServletContext();
-        String realPath = servletContext.getRealPath("album-cover");
-        String originalFilename = file.getOriginalFilename();
-        File f = new File(realPath + "/" + originalFilename);
-
-        album.setCoverImg(originalFilename);
-        album.setCount(0);
-        album.setScore(0);
-        album.setPubDate(new Date());
-
+    public void addAlbum(Album album, MultipartFile file) {
+        StorePath storePath = null;
         try {
-            file.transferTo(f);
+            storePath = fastFileStorageClient.uploadFile(file.getInputStream(), file.getSize(), FilenameUtils.getExtension(file.getOriginalFilename()), null);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        album.setCoverImg(storePath.getFullPath());
+        album.setCount(0);
+        album.setScore(0);
+        album.setPubDate(new Date());
 
         albumMapper.insert(album);
     }

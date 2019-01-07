@@ -4,7 +4,7 @@
     $(function () {
         $("#albumDetailForm").form("load", album);
 
-        var path = "${pageContext.request.contextPath}/album-cover/" + album.coverImg;
+        var path = "http://192.168.169.135/" + album.coverImg;
         $("#detailAlbumCoverImg").prop("src", path);
 
         $("#back").linkbutton({

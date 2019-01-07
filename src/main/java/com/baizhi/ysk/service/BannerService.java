@@ -11,7 +11,7 @@ import java.util.List;
 public interface BannerService {
     Dto<Banner> queryAllBanner(Integer page, Integer rows);
 
-    void addBanner(MultipartFile file, Banner banner, HttpSession session);
+    void addBanner(MultipartFile file, Banner banner);
 
     void deleteBanner(Integer bannerId, HttpSession session);
 

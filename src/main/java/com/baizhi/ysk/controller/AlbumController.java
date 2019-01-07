@@ -30,8 +30,8 @@ public class AlbumController {
     }
 
     @RequestMapping("/addAlbum")
-    public void addAlbum(Album album, MultipartFile file, HttpSession session) {
-        albumService.addAlbum(album, file, session);
+    public void addAlbum(Album album, MultipartFile file) {
+        albumService.addAlbum(album, file);
     }
 
     @RequestMapping("/exportAlbum")

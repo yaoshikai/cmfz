@@ -5,6 +5,9 @@ import com.baizhi.ysk.entity.Chapter;
 import com.baizhi.ysk.mapper.AlbumMapper;
 import com.baizhi.ysk.mapper.ChapterMapper;
 import com.baizhi.ysk.service.ChapterService;
+import com.github.tobato.fastdfs.domain.StorePath;
+import com.github.tobato.fastdfs.proto.storage.DownloadByteArray;
+import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import it.sauronsoftware.jave.Encoder;
 import it.sauronsoftware.jave.EncoderException;
 import it.sauronsoftware.jave.MultimediaInfo;
@@ -13,13 +16,10 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -35,34 +35,23 @@ public class ChapterServiceImpl implements ChapterService {
     private ChapterMapper chapterMapper;
     @Autowired
     private AlbumMapper albumMapper;
+    @Autowired
+    FastFileStorageClient fastFileStorageClient;
 
     @Override
-    public void addChapter(Chapter chapter, MultipartFile file, HttpSession session) {
-        ServletContext servletContext = session.getServletContext();
-        String realPath = servletContext.getRealPath("audio");
-        String originalFilename = file.getOriginalFilename();
-
-        File dir = new File(realPath);
-        if (!dir.exists()) {
-            dir.mkdir();
+    public void addChapter(Chapter chapter, MultipartFile file) {
+        StorePath storePath = null;
+        try {
+            storePath = fastFileStorageClient.uploadFile(file.getInputStream(), file.getSize(), FilenameUtils.getExtension(file.getOriginalFilename()), null);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
 
         /*给属性赋值*/
         String uuid = UUID.randomUUID().toString().replace("-", "");
         chapter.setId(uuid);
-        /*给文件重命名*/
-        String extension = FilenameUtils.getExtension(originalFilename);
-        String newName = uuid + "." + extension;
-        chapter.setUrl(newName);
+        chapter.setUrl(storePath.getFullPath());
         chapter.setUploadDate(new Date());
-
-        /*将该文件存到硬盘*/
-        try {
-            file.transferTo(new File(realPath + "/" + newName));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         /*获取文件大小*/
         Long fileSize = file.getSize();
@@ -71,7 +60,8 @@ public class ChapterServiceImpl implements ChapterService {
         String format = df.format(d / 1024 / 1024);
 
         /*获取时长*/
-        File f = new File(realPath + "/" + newName);
+
+        File f = new File("D:/audio/" + file.getOriginalFilename());
         Encoder encoder = new Encoder();
         MultimediaInfo info = null;
         try {
@@ -106,16 +96,12 @@ public class ChapterServiceImpl implements ChapterService {
     }
 
     @Override
-    public void download(String name, String title, HttpSession session, HttpServletResponse response) {
-        ServletContext servletContext = session.getServletContext();
-        String realPath = servletContext.getRealPath("audio");
-
-        String extension = FilenameUtils.getExtension(name);
-
+    public void download(String name, String title, HttpServletResponse response) {
         ServletOutputStream outputStream = null;
         try {
-            byte[] bytes = FileCopyUtils.copyToByteArray(new File(realPath + "/" + name));
-            response.setHeader("content-disposition", "attachment; filename=" + URLEncoder.encode(title + "." + extension, "UTF-8"));
+            String[] ss = name.split("/", 2);
+            byte[] bytes = fastFileStorageClient.downloadFile(ss[0], ss[1], new DownloadByteArray());
+            response.setHeader("content-disposition", "attachment; filename=" + URLEncoder.encode(title + "." + FilenameUtils.getExtension(name), "UTF-8"));
             response.setContentType("audio/mpeg");
             outputStream = response.getOutputStream();
 

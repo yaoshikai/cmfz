@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.baizhi.ysk.mapper.ArticleMapper">
+    <resultMap id="rm1" type="Article">
+        <id column="aid" property="id"/>
+        <result column="title" property="title"/>
+        <result column="insert_img" property="insertImg"/>
+        <result column="content" property="content"/>
+        <result column="pub_date" property="pubDate"/>
+        <association property="guru" javaType="Guru">
+            <id column="gid" property="id"/>
+            <result column="dharma" property="dharma"/>
+        </association>
+    </resultMap>
+
 
     <select id="queryAllArticleBySsyj" parameterType="Integer" resultType="Article">
         select a.id,a.title,a.insert_img insertImg,a.content,a.pub_date pubDate
@@ -18,6 +30,15 @@
              .
              guru_id
         where u.id=#{uid}
+    </select>
+
+    <select id="queryAllArticle" resultMap="rm1">
+        select a.id aid,a.title,a.insert_img,a.content,a.pub_date,g.id gid,g.dharma
+        from (select id,title,insert_img,content,pub_date,guru_id
+              from article limit
+                   ${(page-1)*rows},
+                   ${rows}) a
+                 left join guru g on a.guru_id = g.id
     </select>
 
 </mapper>

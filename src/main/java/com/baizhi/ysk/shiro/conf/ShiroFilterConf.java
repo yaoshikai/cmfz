@@ -35,7 +35,9 @@ public class ShiroFilterConf {
     @Bean
     public SecurityManager getSecurityManager(Realm realm, CacheManager cacheManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        /*为安全管理器设置缓存*/
         securityManager.setCacheManager(cacheManager);
+        /*为安全管理器设置Realm*/
         securityManager.setRealm(realm);
         return securityManager;
     }
@@ -43,6 +45,7 @@ public class ShiroFilterConf {
     @Bean
     public Realm getRealm(CredentialsMatcher credentialsMatcher) {
         MyRealm myRealm = new MyRealm();
+        /*为Realm设置凭证匹配器*/
         myRealm.setCredentialsMatcher(credentialsMatcher);
         return myRealm;
     }
